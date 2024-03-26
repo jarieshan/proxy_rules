@@ -24,9 +24,10 @@ proxy-groups:
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     use:
-      - Airport
       - SubPolicy_Auto_US
       - SubPolicy_Auto_JP
+      - Airport
+
 
 
   - name: "🤖 AIProxy"
