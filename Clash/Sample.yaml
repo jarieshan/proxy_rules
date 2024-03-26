@@ -21,9 +21,12 @@ proxy-groups:
 
   - name: "🚀 Select"
     type: select
-    include-all: true
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
+    use:
+      - Airport
+      - SubPolicy_Auto_US
+      - SubPolicy_Auto_JP
 
 
   - name: "🤖 AIProxy"
