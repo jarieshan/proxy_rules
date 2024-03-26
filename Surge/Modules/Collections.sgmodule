@@ -1,0 +1,49 @@
+#!url=https://raw.githubusercontent.com/jarieshan/proxy_rules/Release/Surge/Modules/Collections.sgmodule
+#!name=APP Unlocked
+#!desc=APP 功能解锁
+# Fork From chxm1023/Script_X
+
+[URL Rewrite]
+# 彩云天气去广告
+^https?:\/\/ad\.(caiyunapp|cyapi)\.(cn|com) - reject
+
+[Map Local]
+# 彩云天气去广告
+^http:\/\/adx\.sogaha\.cn\/sdk\/ad\/get data="https://raw.githubusercontent.com/mieqq/mieqq/master/reject-200.txt"
+
+[Script]
+#************************************#
+# 彩云天气
+# hostname = *.cyapi.cn, *.caiyunapp.com, adx.sogaha.cn
+彩云天气-SVIP会员 = type=http-response,pattern=^https?:\/\/(biz|wrapper|starplucker)\.(cyapi|caiyunapp)\.(cn|com)\/(.+\/(user\?app_name|activity\?app_name|visitors|operation\/banners)|p\/v\d\/(vip_info|user_info)),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/caiyuntianqi.js
+彩云天气-SVIP地图 = type=http-request,pattern=^https?:\/\/(api|wrapper)\.(cyapi|caiyunapp)\.(cn|com)\/v\d\/(satellite|nafp\/origin_images),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/caiyuntianqi.js
+
+#************************************#
+# 阿里云盘 净化/解锁SVIP
+# hostname = *.aliyundrive.com, *.alipan.com
+阿里云盘 = type=http-response,pattern=^https?:\/\/(api|member)\.(aliyundrive|alipan)\.com\/(.+\/(users|activity|user\/get)|((business|apps)\/.+\/users|adrive\/.+\/user)),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/alidrive.js
+
+#************************************#
+# Spotify (不能超高音质)
+# hostname = spclient.wg.spotify.com
+Spotify-json = type=http-request,pattern=^https?:\/\/spclient\.wg\.spotify\.com\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/,requires-body=0,script-path=https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-json.js
+Spotify-proto = type=http-response,pattern=^https?:\/\/spclient\.wg\.spotify\.com\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$,requires-body=1,binary-body-mode=1,max-size=0,script-path=https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-proto.js,script-update-interval=0
+
+#************************************#
+# 堆糖
+# hostname = *.duitang.com
+堆糖 = type=http-response,pattern=^https?:\/\/.*\.duitang\.com\/napi,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/duitang.js
+
+#************************************#
+# 驾考宝典
+# hostname = *.kakamobi.cn
+驾考宝典 = type=http-response,pattern=^https?:\/\/.*\.kakamobi\.cn\/api\/open,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/jiakaobaodian.js
+
+#************************************#
+# MIX-滤镜大师
+# hostname = cdn-bm.camera360.com
+MIX-滤镜大师 = type=http-response,pattern=^https?:\/\/cdn-bm\.camera360\.com\/api\/(mix\/(getinfo|purchase|recovery)|iap\/check-receipt),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/mix.js
+
+#************************************#
+[MITM]
+hostname = %APPEND% *.cyapi.cn, *.caiyunapp.com, adx.sogaha.cn, *.aliyundrive.com, *.alipan.com, spclient.wg.spotify.com, *.duitang.com, *.kakamobi.cn, cdn-bm.camera360.com

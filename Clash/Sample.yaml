@@ -1,0 +1,281 @@
+port: 7890
+socks-port: 7891
+mode: rule
+external-controller: 127.0.0.1:9090
+
+dns:
+  nameserver:
+    - 223.5.5.5 # 默认值
+    - 8.8.8.8 # 默认值
+    - https://1.1.1.1/dns-query # DNS over HTTPS
+
+proxy-groups:
+  - name: "♻️ Auto"
+    type: fallback
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    proxies:
+      - ♻️ SubPolicy_Auto_US
+      - ♻️ SubPolicy_Auto_JP
+      - 🇺🇸 Airport_US
+
+
+  - name: "🤖 AIProxy"
+    type: fallback
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    proxies:
+      - 🤖 SubPolicy_AIProxy_US
+      - 🤖 SubPolicy_AIProxy_JP
+      - 🇺🇸 Airport_US
+
+
+  - name: "🎥 GlobalMedia"
+    type: fallback
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    proxies:
+      - 🇸🇬 Airport_SG
+      - 🇯🇵 Airport_JP
+      - 🇺🇸 Airport_US
+
+
+  - name: "♻️ SubPolicy_Auto_US"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    use:
+      - SubPolicy_Auto_US
+
+
+  - name: "♻️ SubPolicy_Auto_JP"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    use:
+      - SubPolicy_Auto_JP
+
+
+  - name: "🤖 SubPolicy_AIProxy_US"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    use:
+      - SubPolicy_AIProxy_US
+
+  - name: "🤖 SubPolicy_AIProxy_JP"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    use:
+      - SubPolicy_AIProxy_JP
+
+  - name: "✈️ Airport"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    use:
+      - Airport
+
+  - name: "🇭🇰 Airport_HK"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    filter: '港|HK|hk|Hong Kong|HongKong|hongkong'
+    use:
+      - Airport
+
+  - name: "🇺🇸 Airport_US"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    filter: '美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States'
+    use:
+      - Airport
+
+  - name: "🇯🇵 Airport_JP"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    filter: '日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan'
+    use:
+      - Airport
+
+  - name: "🇸🇬 Airport_SG"
+    type: url-test
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    filter: '新加坡|坡|狮城|SG|Singapore'
+    use:
+      - Airport
+
+proxy-providers:
+  Airport:
+    type: http
+    url: "$api/Airport"
+    interval: 300
+    path: ./proxy/airport.yaml
+    health-check:
+      enable: true
+      lazy: true
+      interval: 300
+      url: http://www.gstatic.com/generate_204
+
+  SubPolicy_Auto_US:
+    type: http
+    url: "$api/SubPolicy_Auto_US"
+    interval: 300
+    path: ./proxy/sub_policy-auto-us.yaml
+    health-check:
+      enable: true
+      interval: 300
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+
+  SubPolicy_Auto_JP:
+    type: http
+    url: "$api/SubPolicy_Auto_JP"
+    interval: 300
+    path: ./proxy/sub_policy-auto-jp.yaml
+    health-check:
+      enable: true
+      interval: 300
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+
+  SubPolicy_AIProxy_US:
+    type: http
+    url: "$api/SubPolicy_AIProxy_US"
+    interval: 300
+    path: ./proxy/sub_policy-aiproxy-us.yaml
+    health-check:
+      enable: true
+      interval: 300
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+
+  SubPolicy_AIProxy_JP:
+    type: http
+    url: "$api/SubPolicy_AIProxy_JP"
+    interval: 300
+    path: ./proxy/sub_policy-aiproxy-jp.yaml
+    health-check:
+      enable: true
+      interval: 300
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+
+rule-providers:
+  local-area-network:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/LocalAreaNetwork.yaml"
+    path: ./ruleset/local-area-network.yaml
+    interval: 86400
+  wechat:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml"
+    path: ./ruleset/wechat.yaml
+    interval: 86400
+  apple:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleProxy/AppleProxy.yaml"
+    path: ./ruleset/apple.yaml
+    interval: 86400
+  openai:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
+    path: ./ruleset/openai.yaml
+    interval: 86400
+  bing:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bing/Bing.yaml"
+    path: ./ruleset/bing.yaml
+    interval: 86400
+  copilot:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
+    path: ./ruleset/copilot.yaml
+    interval: 86400
+  claude:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
+    path: ./ruleset/claude.yaml
+    interval: 86400
+  netflix:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
+    path: ./ruleset/netflix.yaml
+    interval: 86400
+  telegram:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./ruleset/telegram.yaml
+    interval: 86400
+  twitter:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
+    path: ./ruleset/twitter.yaml
+    interval: 86400
+  discord:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.yaml"
+    path: ./ruleset/discord.yaml
+    interval: 86400
+  google:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    path: ./ruleset/google.yaml
+    interval: 86400
+  cloudflare:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloudflare/Cloudflare.yaml"
+    path: ./ruleset/cloudflare.yaml
+    interval: 86400
+  direct:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Direct/Direct.yaml"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+  global-media:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml"
+    path: ./ruleset/global-media.yaml
+    interval: 86400
+
+
+rules:
+  - RULE-SET,local-area-network,DIRECT
+  - RULE-SET,wechat,DIRECT
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,openai,🤖 AIProxy
+  - RULE-SET,bing,🤖 AIProxy
+  - RULE-SET,copilot,🤖 AIProxy
+  - RULE-SET,claude,🤖 AIProxy
+  - RULE-SET,netflix,🎥 GlobalMedia
+  - RULE-SET,telegram,♻️ Auto
+  - RULE-SET,twitter,♻️ Auto
+  - RULE-SET,discord,♻️ Auto
+  - RULE-SET,google,♻️ Auto
+  - RULE-SET,cloudflare,♻️ Auto
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,global-media,🎥 GlobalMedia
+  - DOMAIN-SUFFIX,nikkei.cn,♻️ Auto
+  - DOMAIN-SUFFIX,longbridge.global,DIRECT
+  - DOMAIN-SUFFIX,ibkr.com,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,♻️ Auto
