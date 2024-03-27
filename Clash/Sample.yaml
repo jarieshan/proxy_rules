@@ -287,5 +287,6 @@ rules:
   - DOMAIN-SUFFIX,nikkei.cn,♻️ Auto
   - DOMAIN-SUFFIX,longbridge.global,DIRECT
   - DOMAIN-SUFFIX,ibkr.com,DIRECT
+  - DOMAIN-SUFFIX,bochk.com,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,♻️ Auto
