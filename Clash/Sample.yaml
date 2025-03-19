@@ -280,6 +280,12 @@ rule-providers:
     interval: 86400
 
 rules:
+  - DOMAIN-SUFFIX,nikkei.cn,♻️ Auto
+  - DOMAIN-SUFFIX,longbridge.global,DIRECT
+  - DOMAIN-SUFFIX,ibkr.com,DIRECT
+  - DOMAIN-SUFFIX,bochk.com,DIRECT
+  - DOMAIN-SUFFIX,kaggle.com,🇺🇸 Airport_US
+  - DOMAIN-SUFFIX,kaggleusercontent.com,🇺🇸 Airport_US
   - RULE-SET,local-area-network,DIRECT
   - RULE-SET,wechat,DIRECT
   - RULE-SET,apple,DIRECT
@@ -297,11 +303,5 @@ rules:
   - RULE-SET,direct,DIRECT
   - RULE-SET,binance,DIRECT
   - RULE-SET,global-media,🎥 GlobalMedia
-  - DOMAIN-SUFFIX,nikkei.cn,♻️ Auto
-  - DOMAIN-SUFFIX,longbridge.global,DIRECT
-  - DOMAIN-SUFFIX,ibkr.com,DIRECT
-  - DOMAIN-SUFFIX,bochk.com,DIRECT
-  - DOMAIN-SUFFIX,kaggle.com,🇺🇸 Airport_US
-  - DOMAIN-SUFFIX,kaggleusercontent.com,🇺🇸 Airport_US
   - GEOIP,CN,DIRECT
   - MATCH,♻️ Auto
