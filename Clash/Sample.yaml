@@ -286,6 +286,7 @@ rules:
   - DOMAIN-SUFFIX,bochk.com,DIRECT
   - DOMAIN-SUFFIX,kaggle.com,🇺🇸 Airport_US
   - DOMAIN-SUFFIX,kaggleusercontent.com,🇺🇸 Airport_US
+  - DOMAIN-SUFFIX,cdn.kineticbloom.org,DIRECT
   - RULE-SET,local-area-network,DIRECT
   - RULE-SET,wechat,DIRECT
   - RULE-SET,apple,DIRECT
